@@ -4,12 +4,12 @@ const app = require('./app');
 
 const { logger } = require('./utils');
 const { connect } = require('./models');
-const { agendaTarefas, agendaRanking, agendaLucroUsuarios } = require('./workers');
+//const { agendaTarefas, agendaRanking, agendaLucroUsuarios } = require('./workers');
 
 // inicializa tarefas
-agendaTarefas();
-agendaRanking();
-agendaLucroUsuarios();
+//agendaTarefas();
+//agendaRanking();
+//agendaLucroUsuarios();
 
 const porta = 3000;
 app.listen(porta, () => {
