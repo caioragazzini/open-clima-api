@@ -1,15 +1,27 @@
 const express = require('express');
 require('./auth/jwt');
+const passport = require('passport');
 
 
-const authRouter = require('./auth');
 
 
-const router = express.Router();
 
+//const swaggerUi = require('swagger-ui-express');
+//const swaggerConfig = require('./docs.js');
 
-router.use('/auth', authRouter);
+const usersRouter = require('./users.js');
+const weatherRouter = require('./weather.js');
+const statusRouter = require('./status.js');
+const authRouter = require('./auth'); 
 
+const router = express.Router(); 
+router.use('/status', statusRouter);
+router.use('/users', usersRouter);
+router.use('/weather', weatherRouter);
+router.use('/auth', authRouter); 
 
+// Se você for usar as rotas de documentação, elas viriam aqui também
+// router.use('/docs', swaggerUi.serve);
+// router.use('/docs', swaggerUi.setup(swaggerConfig));
 
 module.exports = router;

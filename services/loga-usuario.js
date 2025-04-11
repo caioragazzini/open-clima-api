@@ -1,5 +1,5 @@
 const jsonWebToken = require("jsonwebtoken");
-const { Usuario } = require("../models");
+const { User } = require("../models");
 const bcrypt = require('bcrypt');
 
 const logaUsuario = async(email, senha)=>{
@@ -7,7 +7,7 @@ const logaUsuario = async(email, senha)=>{
     if(!email || !senha){
         throw new Error('Campo senha e email são obrigatorios')
     }
-    const usuario = await Usuario.findOne({email:email}).select('senha confirmado'); // Correção aqui
+    const usuario = await User.findOne({email:email}).select('senha confirmado'); // Correção aqui
 
     if(!usuario){
         throw new Error('Usuário não encontrado');          

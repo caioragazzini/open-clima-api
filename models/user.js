@@ -1,7 +1,7 @@
 const { Schema } = require('mongoose');
 const { cpf } = require('cpf-cnpj-validator');
 
-const UsuarioSchema = new Schema({
+const UserSchema = new Schema({
     nome:
     {
         type: String, 
@@ -101,4 +101,4 @@ const UsuarioSchema = new Schema({
 });
 
 
-module.exports = UsuarioSchema;
+module.exports = UserSchema;

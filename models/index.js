@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
-const UsuarioSchema = require('./usuario');
-const ClimaSchema = require('./clima');
+const UserSchema = require('./user');
+const WeatherSchema = require('./weather');
 
 
-const Usuario = mongoose.model('Usuario', UsuarioSchema);
-const Clima = mongoose.model('Clima', ClimaSchema);
+const User = mongoose.model('User', UserSchema);
+const Weather = mongoose.model('Weather', WeatherSchema);
 
 const connect = async () => {
     await mongoose.connect(process.env.MONGO_URL);
@@ -12,7 +12,7 @@ const connect = async () => {
 
   module.exports = {
     connect,
-    Usuario,
-    Clima,    
+    User,
+    Weather,    
   }
   

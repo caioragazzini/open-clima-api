@@ -1,10 +1,10 @@
 const jsonWebToken = require('jsonwebtoken');
-const { Ususario, Usuario } = require('../models');
+const { User } = require('../models');
 
 const validaTokenSenha = async(token)=>{
     try{
         const jwt =jsonWebToken.verify(token, process.env.JWT_SECRET_KEY);
-        const usuario = await Usuario.findOne({ tokenDeRecuperacao: jwt.token});
+        const usuario = await User.findOne({ tokenDeRecuperacao: jwt.token});
 
         if(!usuario){
             throw new Error('token não encontrado');

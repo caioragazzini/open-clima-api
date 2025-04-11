@@ -81,6 +81,7 @@ router.get('valida-token', async(req,res)=>{
         const { token, redirect }= req.query;
 
         const jwt = await validaTokenAlteracaoDeSenha(token);
+        console.log("🚀 ~ router.get ~ jwt:", jwt)
 
         res.redirect(`${redirect}?jwt=${jwt}`);
 
