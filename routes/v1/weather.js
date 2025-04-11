@@ -5,7 +5,7 @@ const { logger } = require('../../utils');
 const router = express.Router();
 
 // Rota para consultar clima
-router.get('/clima', async (req, res) => {
+router.get('/', async (req, res) => {
   const { cidade, userId } = req.query;
 
   if (!cidade || !userId) {

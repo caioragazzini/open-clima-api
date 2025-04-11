@@ -9,12 +9,14 @@ const passport = require('passport');
 //const swaggerUi = require('swagger-ui-express');
 //const swaggerConfig = require('./docs.js');
 
-const usersRouter = require('./users.js');
-const weatherRouter = require('./weather.js');
-const statusRouter = require('./status.js');
+const usersRouter = require('./users');
+const weatherRouter = require('./weather');
+const statusRouter = require('./status');
 const authRouter = require('./auth'); 
 
 const router = express.Router(); 
+
+
 router.use('/status', statusRouter);
 router.use('/users', usersRouter);
 router.use('/weather', weatherRouter);

@@ -20,6 +20,7 @@ app.use('/', router);
 
 // caso nenhuma rota de match, redireciona para a 404
 app.use(function(_req, _res, next) {
+  
   next(createError(404));
 });
 

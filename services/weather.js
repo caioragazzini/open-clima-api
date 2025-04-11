@@ -14,6 +14,7 @@ const consultarClima = async (cidade, userId) => {
         lang: 'pt_br'
       }
     });
+    console.log("🚀 ~ consultarClima ~ data:", data)
 
     const temperatura = data.main.temp;
     const condicaoClimatica = data.weather[0].description;
@@ -22,7 +23,8 @@ const consultarClima = async (cidade, userId) => {
       userId,
       cidade,
       temperatura,
-      condicaoClimatica
+      condicaoClimatica,
+      dataConsulta: new Date()
     });
 
     return registro;
