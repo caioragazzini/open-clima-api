@@ -3,7 +3,7 @@ const { Schema } = require('mongoose');
 const WeatherSchema = new Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'Usuario',
+    ref: 'User',
     required: true
   },
   cidade: {

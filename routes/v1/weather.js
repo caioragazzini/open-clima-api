@@ -1,5 +1,5 @@
 const express = require('express');
-const { consultarClima, listarHistoricoPorUsuario } = require('../../services/weather');
+const { consultarClima, listarHistoricoPorUsuario, consultarAlertasPersonalizados, criarAlertaPersonalizado } = require('../../services/weather');
 const { logger } = require('../../utils');  
 
 const router = express.Router();
@@ -55,5 +55,55 @@ router.get('/historico', async (req, res) => {
     });
   }
 });
+
+
+// Rota para consultar alertas personalizados
+router.get('/alertas-personalizados', async (req, res) => {
+  const { cidade, userId } = req.query;
+  console.log("🚀 ~ router.get ~ cidade:", cidade)
+
+  if (!cidade || !userId) {
+    return res.status(400).json({
+      sucesso: false,
+      erro: 'Cidade e userId são obrigatórios',
+    });
+  }
+
+  try {
+    const alertas = await consultarAlertasPersonalizados(cidade, userId);
+    
+    res.json(alertas);
+  } catch (e) {
+    logger.error(`Erro ao consultar alertas personalizados: ${e.message}`);
+    res.status(500).json({
+      sucesso: false,
+      erro: e.message,
+    });
+  }
+});
+
+// Rota para criar um alerta personalizado
+router.post('/alertas-personalizados', async (req, res) => {
+  const { cidade, userId, tipo, valor } = req.body;
+
+  if (!cidade || !userId || !tipo || !valor) {
+    return res.status(400).json({
+      sucesso: false,
+      erro: 'Cidade, userId, tipo e valor são obrigatórios',
+    });
+  }
+
+  try {
+    const resultado = await criarAlertaPersonalizado(userId, cidade, tipo, valor);
+    res.json(resultado);
+  } catch (e) {
+    logger.error(`Erro ao criar alerta personalizado: ${e.message}`);
+    res.status(500).json({
+      sucesso: false,
+      erro: e.message,
+    });
+  }
+});
+
 
 module.exports = router;
