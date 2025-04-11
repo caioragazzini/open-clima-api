@@ -19,7 +19,8 @@ const customAlertSchema = new Schema({
     type: Number,
     required: true,
   },
+}, {
+  timestamps: true // Adiciona automaticamente createdAt e updatedAt
 });
-
 
 module.exports = customAlertSchema;

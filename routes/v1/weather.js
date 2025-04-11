@@ -1,5 +1,6 @@
 const express = require('express');
 const { consultarClima, listarHistoricoPorUsuario, consultarAlertasPersonalizados, criarAlertaPersonalizado } = require('../../services/weather');
+const { buscaDadosClimaOnline } = require('../../services/busca-clima');
 const { logger } = require('../../utils');  
 
 const router = express.Router();
@@ -16,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 
   try {
-    const clima = await consultarClima(cidade, userId);
+    const clima = await buscaDadosClimaOnline(cidade, userId);
     res.json({
       sucesso: true,
       clima,
@@ -60,18 +61,16 @@ router.get('/historico', async (req, res) => {
 // Rota para consultar alertas personalizados
 router.get('/alertas-personalizados', async (req, res) => {
   const { cidade, userId } = req.query;
-  console.log("🚀 ~ router.get ~ cidade:", cidade)
 
-  if (!cidade || !userId) {
+  if (!userId) {
     return res.status(400).json({
       sucesso: false,
-      erro: 'Cidade e userId são obrigatórios',
+      erro: 'userId é obrigatório',
     });
   }
 
   try {
-    const alertas = await consultarAlertasPersonalizados(cidade, userId);
-    
+    const alertas = await consultarAlertasPersonalizados(userId, cidade); // Passa 'cidade' (pode ser undefined)
     res.json(alertas);
   } catch (e) {
     logger.error(`Erro ao consultar alertas personalizados: ${e.message}`);

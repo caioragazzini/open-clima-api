@@ -49,60 +49,61 @@ const listarHistoricoPorUsuario = async (userId) => {
   }
 };
 
-// Função para consultar alertas personalizados do usuário
-const consultarAlertasPersonalizados = async (cidade, userId) => {
+// Função genérica para consultar alertas personalizados do usuário (opcionalmente por cidade)
+const consultarAlertasPersonalizados = async (userId, cidade) => {
   try {
-    // Consultar as condições climáticas para a cidade fornecida
-    const { data } = await axios.get(API_URL, {
-      params: {
-        q: cidade,
-        appid: API_KEY,
-        lang: 'pt_br',
-      },
-    });
+    let alertas;
 
-    // Buscar os alertas personalizados do usuário
-    const alertas = await CustomAlert.find({ userId, cidade });
+    // Se a cidade for fornecida, busca alertas para o usuário naquela cidade
+    if (cidade) {
+      const { data } = await axios.get(API_URL, {
+        params: {
+          q: cidade,
+          appid: API_KEY,
+          lang: 'pt_br',
+        },
+      });
 
-    console.log("🚀 ~ consultarAlertasPersonalizados ~ alertas:", alertas)
-    const alertasNotificados = [];
+      alertas = await CustomAlert.find({ userId: userId, cidade: cidade }).lean();
+      console.log(`🚀 ~ consultarAlertasPersonalizados ~ Alertas para ${cidade}:`, alertas);
 
-    // Verificar se algum alerta personalizado foi atendido
-    for (let alerta of alertas) {
-      const { tipo, valor } = alerta;
+      const alertasNotificados = alertas.filter(alerta => {
+        const { tipo, valor } = alerta;
+        if (tipo === 'temperatura' && data.main.temp >= valor) return true;
+        if (tipo === 'umidade' && data.main.humidity >= valor) return true;
+        if (tipo === 'condicao' && data.weather.some(cond => cond.main.toLowerCase() === valor.toLowerCase())) return true;
+        return false;
+      }).map(alerta => {
+        const { _id, tipo, valor } = alerta;
+        if (alerta.tipo === 'temperatura') return { _id, tipo, mensagem: `A temperatura em ${cidade} atingiu ${data.main.temp}°C, ultrapassando seu limite de ${valor}°C!` };
+        if (alerta.tipo === 'umidade') return { _id, tipo, mensagem: `A umidade em ${cidade} atingiu ${data.main.humidity}%, ultrapassando seu limite de ${valor}%!` };
+        if (alerta.tipo === 'condicao') return { _id, tipo, mensagem: `A condição climática em ${cidade} é ${valor}, como você solicitou!` };
+      });
 
-      if (tipo === 'temperatura' && data.main.temp >= valor) {
-        alertasNotificados.push({
-          tipo: 'temperatura',
-          mensagem: `A temperatura atingiu ${data.main.temp}°C, ultrapassando seu limite de ${valor}°C!`,
-        });
-      } else if (tipo === 'umidade' && data.main.humidity >= valor) {
-        alertasNotificados.push({
-          tipo: 'umidade',
-          mensagem: `A umidade atingiu ${data.main.humidity}%, ultrapassando seu limite de ${valor}%!`,
-        });
-      } else if (tipo === 'condicao' && data.weather.some(cond => cond.main.toLowerCase() === valor.toLowerCase())) {
-        alertasNotificados.push({
-          tipo: 'condicao',
-          mensagem: `A condição climática é ${valor}, como você solicitou!`,
-        });
+      if (alertasNotificados.length > 0) {
+        return { sucesso: true, alertas: alertasNotificados };
+      } else {
+        return { sucesso: true, mensagem: `Nenhum alerta ativado para ${cidade} no momento.` };
       }
-    }
+    } else {
+      // Se a cidade não for fornecida, busca todos os alertas para o usuário (sem verificação climática)
+      alertas = await CustomAlert.find({ userId: userId }).lean();
+      console.log("🚀 ~ consultarAlertasPersonalizados ~ Todos os alertas:", alertas);
 
-    // Se algum alerta for notificado, retornamos os alertas
-    if (alertasNotificados.length > 0) {
       return {
         sucesso: true,
-        alertas: alertasNotificados,
+        alertas: alertas.map(alerta => ({
+          _id: alerta._id,
+          tipo: alerta.tipo,
+          valor: alerta.valor,
+          cidade: alerta.cidade,
+          createdAt: alerta.createdAt, 
+          mensagem: `Alerta de ${alerta.tipo} configurado com valor: ${alerta.valor}.`,
+        })),
       };
     }
-
-    return {
-      sucesso: true,
-      mensagem: 'Não houve nenhum alerta ativado no momento.',
-    };
   } catch (error) {
-    console.error(`Erro ao consultar alertas personalizados para ${cidade}:`, error.message);
+    console.error(`Erro ao consultar alertas personalizados (cidade: ${cidade}, userId: ${userId}):`, error.message);
     throw new Error('Erro ao consultar alertas personalizados.');
   }
 };

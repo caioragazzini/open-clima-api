@@ -1,3 +1,4 @@
+const { buscaDadosClimaNoBanco, buscaDadosClimaOnline } = require('./busca-clima');
 
 module.exports = {
     
@@ -9,6 +10,8 @@ module.exports = {
     enviaEmailDeParabens: require('./envia-email').enviaEmailDeParabens,
     confirmaConta: require('./confirma-conta'),
     validaTokenAlteracaoDeSenha: require('./valida-token-senha'),
+    buscaDadosClimaNoBanco: require('./busca-clima').buscaDadosClimaNoBanco,
+    buscaDadosClimaOnline : require('./busca-clima').buscaDadosClimaOnline,
    
     geraSegredo: require('./otp').geraSegredo,
     validaOtp: require('./otp').validaOtp,
