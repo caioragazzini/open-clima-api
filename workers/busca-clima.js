@@ -21,7 +21,7 @@ var climaWorker = async (job, done) => {
       temperatura: data.temperatura,
       condicaoClimatica: data.condicao,
       dataConsulta: data.data,
-      userId: 'system-worker', // Identifica a origem dos dados
+      userId: 'system-worker', 
     }));
 
     if (registrosClima.length > 0) {

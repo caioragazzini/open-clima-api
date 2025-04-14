@@ -3,7 +3,7 @@ const { validaOtp } = require('../../../services');
 
 /**
  * @openapi
- * /v1/usuarios/otp/validar:
+ * /v1/users/otp/validar:
  *   post:
  *     description: Valida o OTP enviado pelo header
  *     security:

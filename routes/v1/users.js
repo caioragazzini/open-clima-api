@@ -8,11 +8,11 @@ const router = express.Router();
 
 /**
  * @openapi
- * /v1/usuarios:
+ * /v1/users:
  *   post:
  *     description: Cria um novo usuário
  *     tags:
- *       - usuario
+ *       - users
  *     requestBody:
  *       required: true
  *       content:
@@ -89,6 +89,58 @@ router.post('/', async (req, res) => {
     }
 });
 
+/**
+ * @openapi
+ * /v1/users:
+ *   put:
+ *     description: Altera a senha do usuário autenticado.
+ *     tags:
+ *       - users
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - senha
+ *             properties:
+ *               senha:
+ *                 type: string
+ *                 example: "NovaSenhaSegura123"
+ *     responses:
+ *       200:
+ *         description: Senha alterada com sucesso
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sucesso:
+ *                   type: boolean
+ *                   example: true
+ *                 messagem:
+ *                   type: string
+ *                   example: "Senha alterada com sucesso"
+ *       401:
+ *         description: Usuário não autenticado
+ *       422:
+ *         description: Erro ao alterar a senha
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sucesso:
+ *                   type: boolean
+ *                   example: false
+ *                 erro:
+ *                   type: string
+ *                   example: "Erro ao alterar a senha: hash failed"
+ */
+
 router.put('/senha', 
     passport.authenticate('jwt', { session: false }), 
     async(req,res)=>{
@@ -113,16 +165,15 @@ router.put('/senha',
 }
 });
 
-
 /**
  * @openapi
- * /v1/usuarios/me:
+ * /v1/users/me:
  *   get:
  *     description: Retorna o perfil do usuário(a)
  *     security:
  *       - auth: []
  *     tags:
- *       - usuario
+ *       - users
  *     responses:
  *       200:
  *         description: Informações do perfil do usuário(a)
@@ -168,15 +219,16 @@ router.get('/me',
         
     });
 });
+
 /**
 * @openapi
-* /v1/usuarios/otp:
+* /v1/users/otp:
 *   post:
 *     description: Gera um segredo TOTP e retorna um QR Code para autenticação de dois fatores (2FA)
 *     security:
 *       - auth: []
 *     tags:
-*       - usuario
+*       - users
 *     responses:
 *       200:
 *         description: QR Code para configuração do TOTP

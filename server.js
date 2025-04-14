@@ -4,10 +4,10 @@ const app = require('./app');
 
 const { logger } = require('./utils');
 const { connect } = require('./models');
-const { agendaTarefasClima } = require('./workers');
+//const { agendaTarefasClima } = require('./workers');
 
 // inicializa tarefas
-agendaTarefasClima();
+//agendaTarefasClima();
 //agendaRanking();
 //agendaLucroUsuarios();
 

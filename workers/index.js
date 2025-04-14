@@ -17,15 +17,15 @@ const agendaTarefasClima = async () => {
     {},
     {
       repeat: {
-        cron: '*/2 * * * *', 
+        cron: '*/1 * * * *', 
       },
       attempts: 3,
       backoff: 5000,
-      jobId: 'job-a-cada-2-minutos-clima', 
+      jobId: 'job-a-cada-1-minutos-clima', 
     }
   );
 
-  console.log('Job de clima agendado para executar a cada 2 minutos.');
+  console.log('Job de clima agendado para executar a cada 1 minutos.');
 };
 
 module.exports = {
