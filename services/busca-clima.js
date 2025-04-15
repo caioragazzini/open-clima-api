@@ -2,32 +2,38 @@ const axios = require('axios');
 const { Weather } = require('../models'); 
 const { logger } = require('../utils');
 
+const API_URL = process.env.OPENWEATHER_API_URL;
+const API_KEY = process.env.OPENWEATHER_KEY;
+
 const buscaDadosClimaOnline = async (cidade, userId) => { 
-  const url = `${process.env.OPENWEATHER_API_URL}`;
+  //const url = `${process.env.OPENWEATHER_API_URL}`;
 
   try {
-    const { data } = await axios.get(url, {
+    const { data } = await axios.get(API_URL, {
       params: {
         q: cidade,
-        appid: process.env.OPENWEATHER_KEY,
-        lang: 'pt_br',
-        units: 'metric', 
+        appid: API_KEY,
+        units: 'metric',
+        lang: 'pt_br'
       },
     });
 
-    const dataDaConsulta = new Date();
+    const temperatura = data.main.temp;
+    const condicaoClimatica = data.weather[0].description;
 
-    
-    return {
-      cidade: data.name,
-      temperatura: data.main.temp,
-      umidade: data.main.humidity,
-      condicao: data.weather[0].description,
-      data: dataDaConsulta,
-    };
+    const registro = await Weather.create({
+      userId,
+      cidade,
+      temperatura,
+      condicaoClimatica,
+      dataConsulta: new Date()
+    });
+
+    return registro;
+
   } catch (error) {
-    logger.error(`Erro ao buscar dados de clima online para ${cidade}: ${error.message}`);
-    return null; 
+    console.error(`Erro ao consultar clima para ${cidade}:`, error.message);
+    throw new Error('Erro ao consultar dados de clima.');
   }
 };
 

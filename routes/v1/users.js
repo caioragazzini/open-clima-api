@@ -1,5 +1,5 @@
 const express = require('express');
-const { criarUsuario, checaSaldo, geraSegredo } = require('../../services');
+const { criarUsuario, geraSegredo } = require('../../services');
 const { logger } = require('../../utils');
 const passport = require('passport');
 const bycrypt = require('bcrypt');
