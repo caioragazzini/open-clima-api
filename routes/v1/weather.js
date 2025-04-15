@@ -1,5 +1,5 @@
 const express = require('express');
-const { consultarClima, listarHistoricoPorUsuario, consultarAlertasPersonalizados, criarAlertaPersonalizado } = require('../../services/weather');
+const { listarHistoricoPorUsuario, consultarAlertasPersonalizados, criarAlertaPersonalizado } = require('../../services/weather');
 const { buscaDadosClimaOnline } = require('../../services/busca-clima');
 const { logger } = require('../../utils');  
 

@@ -13,14 +13,14 @@ const customAlertSchema = new Schema({
   tipo: {
     type: String,
     required: true,
-    enum: ['temperatura', 'umidade', 'condicao'], // Tipos de alertas possíveis
+    enum: ['tempestade', 'neve', 'vento','temperatura', 'umidade', 'condicao', 'chuva'], // Tipos de alertas possíveis
   },
   valor: {
     type: Number,
     required: true,
   },
 }, {
-  timestamps: true // Adiciona automaticamente createdAt e updatedAt
+  timestamps: true 
 });
 
 module.exports = customAlertSchema;
