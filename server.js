@@ -7,7 +7,7 @@ const { connect } = require('./models');
 const { agendaTarefasClima } = require('./workers');
 
 // inicializa tarefas
-agendaTarefasClima();
+//agendaTarefasClima();
 //agendaRanking();
 //agendaLucroUsuarios();
 
