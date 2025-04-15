@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
   try {
     const clima = await buscaDadosClimaOnline(cidade, userId);
-    console.log("🚀 ~ router.get ~ clima:", clima)
+    console.log("🚀 ~ router.get ~ clima---2#$%:", clima)
     res.json({
       sucesso: true,
       clima,

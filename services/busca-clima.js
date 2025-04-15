@@ -28,6 +28,7 @@ const buscaDadosClimaOnline = async (cidade, userId) => {
       condicaoClimatica,
       dataConsulta: new Date()
     });
+    console.log("🚀 ~ buscaDadosClimaOnline ~ registro:", registro)
 
     return registro;
 
