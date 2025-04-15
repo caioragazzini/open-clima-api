@@ -12,9 +12,9 @@ const logaUsuario = async(email, senha)=>{
     if(!usuario){
         throw new Error('Usuário não encontrado');          
     }
-    if(!usuario.confirmado){
+    /*if(!usuario.confirmado){
         throw new Error('Usuario não confirmado! cheque seu email para logar');
-    }
+    }*/
 
     if(!await bcrypt.compare(senha, usuario.senha)){
         throw new Error('Senha inválida')
