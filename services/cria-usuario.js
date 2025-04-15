@@ -23,7 +23,7 @@ const criarUsuario = async(usuario, urlDeRedirecionamento) => {
     const {senha, ...usuarioSalvo} = (await User.create(usuario))._doc;
 
    
-    await enviaEmailDeConfirmacao(usuarioSalvo, urlDeRedirecionamento);
+    //await enviaEmailDeConfirmacao(usuarioSalvo, urlDeRedirecionamento);
 
     return usuarioSalvo;
 
